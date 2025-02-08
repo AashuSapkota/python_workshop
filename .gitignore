@@ -1,0 +1,12 @@
+# Ignore virtual environment directories
+**/venv/
+
+
+# Ignore Django migrations
+**/migrations/
+
+# Ignore Jupyter Notebook checkpoints
+**/.ipynb_checkpoints/
+
+# Ignore Django database files
+*.sqlite3
