@@ -10,3 +10,9 @@
 
 # Ignore Django database files
 *.sqlite3
+
+# Ignore Python bytecode files
+*.pyc
+*.pyo
+*.pyd
+*.__pycache__/
