@@ -1,0 +1,12 @@
+{% extends "artists/base.html" %}
+
+{% block content %}
+<h2>{{ artist.name }}</h2>
+<p>DOB: {{ artist.dob }}</p>
+<p>Gender: {{ artist.get_gender_display }}</p>
+<p>Address: {{ artist.address }}</p>
+<p>First Release Year: {{ artist.first_release_year }}</p>
+<p>No. of Albums Released: {{ artist.no_of_albums_released }}</p>
+<a href="{% url 'artist_update' artist.pk %}">Edit</a> |
+<a href="{% url 'artist_list' %}">Back to list</a>
+{% endblock %}
