@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Argon Dashboard - Free Dashboard for Bootstrap 4</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'artists/img/brand/favicon.png' %}" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'artists/vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'artists/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}"
+    type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{% static 'artists/css/argon.css'%}" type="text/css">
+</head>
+
+<body class="bg-default">
+ 
+  <!-- Main content -->
+  <div class="main-content">
+    <div id="error-container" class="error-container" style="position: fixed; top: 1%; right: 0; width: 25%; z-index: 999999999;"></div>
+    <!-- Header -->
+    <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
+
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1"
+          xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container mt--8 pb-5">
+      <div class="row justify-content-center">
+        <div class="col-lg-5 col-md-7">
+          <div class="card bg-secondary border-0 mb-0" style="height: 100%;">
+            <div class="card-body px-lg-5 py-lg-5">
+              <div class="text-center text-muted mb-4">
+                <small>SIGN-IN</small>
+              </div>
+              <form role="form" id="loginForm">
+                {% csrf_token %}
+                <div class="form-group mb-3">
+                  <div class="input-group input-group-merge input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Email" type="email" id="email" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-merge input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Password" type="password" id="password" required>
+                  </div>
+                </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary my-4" name="sign-in">Sign in</button>
+                  <a href="{% url 'users:register_user' %}" class="btn btn-primary my-4" name="registration">Sign Up</a>
+                  <!-- <button type="submit" class="btn btn-primary my-4" name="sign-in">Sign in</button> -->
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Argon Scripts -->
+  <!-- Core -->
+  <script src="{% static 'artists/vendor/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'artists/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'artists/vendor/js-cookie/js.cookie.js' %}"></script>
+  <script src="{% static 'artists/vendor/jquery.scrollbar/jquery.scrollbar.min.js' %}"></script>
+  <script src="{% static 'artists/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js' %}"></script>
+  <!-- Argon JS -->
+  <script src="{% static 'artists/js/argon.js' %}"></script>
+</body>
+
+<script>
+  const loginUrl = "{% url 'users:login' %}"
+  const successUrl = "{% url 'users:dashboard_view' %}"
+  $(document).ready(function () {
+    $('#loginForm').submit(function (event) {
+      event.preventDefault();
+      const email = $('#email').val();
+      const password = $('#password').val();
+      const data = {
+        email: email,
+        password: password
+      };
+      $.ajax({
+        url: loginUrl,
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function (response) {
+          if (response.Status === 'Success') {
+            const { access, refresh } = response.Message;
+            // Store access token in local storage
+            localStorage.setItem('access_token', access);
+            // Store refresh token in local storage
+            localStorage.setItem('refresh_token', refresh);
+            window.location.href = successUrl;
+          }
+        },
+        error: function (xhr, textStatus, errorThrown) {
+          // Error handling
+          // console.log(xhr)
+          if (xhr.responseJSON && xhr.responseJSON.Status === 'Error') {
+            const errorMessage = xhr.responseJSON.Message;
+            const alertDiv = $('<div>').addClass('alert alert-danger').attr('role', 'alert').html('<strong>Danger!</strong> ' + errorMessage);
+            $('#error-container').empty().append(alertDiv);
+            console.log('Error:', errorMessage);
+          } else {
+            console.log('Unknown Error:', errorThrown);
+          }
+        }
+      });
+    });
+  });
+</script>
+
+</html>

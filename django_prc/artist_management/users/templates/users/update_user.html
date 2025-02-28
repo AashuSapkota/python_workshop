@@ -1,0 +1,164 @@
+{% extends 'artists/base.html' %}
+{% block body %}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<div class="container-fluid mt--6">
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="card bg-default">
+                <div class="card-header bg-transparent">
+                    <div class="row align-items-center">
+                        <div class="col">
+                            <h5 class="h3 text-white mb-0 text-uppercase">
+                                Update User
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form role="form" id="userForm">
+                        {% csrf_token %}
+                        <input hidden id="user_id" value="{{user.id}}" />
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="First Name" id="first_name" type="text"
+                                    value="{{user.first_name}}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Last Name" id="last_name" type="text"
+                                    value="{{user.last_name}}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Email" id="email" type="email"
+                                    value="{{user.email}}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-headphones"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="PhoneNumber" id="phone" type="text"
+                                    inputmode="numeric" pattern="[0-9]*" title="Please enter numbers only"
+                                    value="{{user.phone}}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                                </div>
+                                <input id="dob-input" class="form-control" placeholder="DOB" type="text"
+                                    value="{{user.dob|date:'Y-m-d'}}" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-badge"></i></span>
+                                </div>
+                                <select class="form-control" placeholder="gender" id="gender">
+                                    <option value="m">Male</option>
+                                    <option value="f">Female</option>
+                                    <option value="o">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="input-group input-group-merge input-group-alternative mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ni ni-pin-3"></i></span>
+                                </div>
+                                <input class="form-control" placeholder="Address" id="address" type="text"
+                                    value="{{user.address}}" required>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary mt-4">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+
+
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#dob-input").datepicker({
+            maxDate: "-1d",
+            dateFormat: "yy-mm-dd" // Set desired date format
+        });
+    });
+</script>
+<script>
+    const user_id = $('#user_id').val();
+    const requestUrl = "{% url 'users:update_user' user_id=0 %}".replace('0', user_id)
+    const successUrl = "{% url 'users:list_users' %}"
+    const loginUrl = "{% url 'users:login' %}"
+    $(document).ready(function () {
+        $('#userForm').submit(function (event) {
+            event.preventDefault();
+            const accessToken = localStorage.getItem('access_token');
+            const first_name = $('#first_name').val();
+            const last_name = $('#last_name').val();
+            const email = $('#email').val();
+            const phone = $('#phone').val();
+            const dob = $('#dob-input').val();
+            const gender = $('#gender').val();
+            const address = $('#address').val();
+            const data = {
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
+                phone: phone,
+                dob: dob,
+                gender: gender,
+                address: address
+            };
+            console.log(data)
+            $.ajax({
+                url: requestUrl,
+                method: 'PUT',
+                contentType: 'application/json',
+                headers: {
+                    'Authorization': 'Bearer ' + accessToken
+                },
+                data: JSON.stringify(data),
+                success: function (response) {
+                    if (response.Status === 'Success') {
+                        window.location.href = successUrl;
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log(xhr, textStatus)
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    var errorMessage = errorResponse.Message;
+                    alert(errorMessage)
+                }
+            })
+        })
+    })
+
+</script>
+{% endblock js %}

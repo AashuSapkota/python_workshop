@@ -1,0 +1,105 @@
+{% extends 'artists/base.html' %}
+{% block body %}
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<div class="container-fluid mt--6">
+    <div class="row">
+      <div class="col-xl-8">
+        <div class="card bg-default" style="height: 100%;">
+          <div class="card-header bg-transparent">
+            <div class="row align-items-center">
+              <div class="col">
+                <h5 class="h3 text-white mb-0 text-uppercase">
+                    Create Artist Music
+                </h5>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <form role="form" id="musicForm">
+                <input type="hidden" value="{{artist_id}}" id="artist_id">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                        </div>
+                        <input class="form-control" placeholder="ArtistTitle" id="artist_title" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                        </div>
+                        <input class="form-control" placeholder="AlbumName" id="album_name" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-badge"></i></span>
+                        </div>
+                        <select class="form-control" placeholder="genre" id="genre">
+                            {% for choice in genre_choices %}
+                                <option value="{{choice.0}}">{{ choice.1 }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary mt-4">Create</button>
+                </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}
+
+{% block js %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    const artistId = $('#artist_id').val();
+    const requestUrl = "{% url 'artists:register_artist_music'  artist_id=0%}".replace('0', artistId)
+    const successUrl = '{% url "artists:list_artist_music" artist_id=0 %}'.replace('0', artistId);
+    const loginUrl = ""
+    $(document).ready(function () {
+        $('#musicForm').submit(function (event) {
+            event.preventDefault();
+            const artist_name = $('#artist_name').val();
+            const artist_title = $('#artist_title').val();
+            const album_name = $('#album_name').val();
+            const genre = $('#genre').val();
+            const data = {
+                artist_id: artistId,
+                title: artist_title,
+                album_name: album_name,
+                genre: genre
+            };
+            console.log(data)
+            $.ajax({
+                url: requestUrl,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function (response) {
+                    console.log(response)
+                    if (response.Status === 'Success') {
+                        window.location.href = successUrl;
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log(xhr, textStatus)
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    var errorMessage = errorResponse.Message;
+                    alert(errorMessage)
+                }
+            })
+        })
+    })
+</script>
+{% endblock js %}

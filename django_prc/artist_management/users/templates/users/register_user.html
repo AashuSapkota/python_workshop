@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Register</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'artists/img/brand/favicon.png' }" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'artists/vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'artists/vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{% static 'artists/css/argon.css' %}" type="text/css">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+
+<body class="bg-default">
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header bg-gradient-primary py-7 py-lg-8 pt-lg-9">
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-default" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    <!-- Page content -->
+    <div class="container mt--8 pb-5">
+      <!-- Table -->
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-8">
+          <div class="card bg-secondary border-0">
+            <div class="card-body px-lg-5 py-lg-5">
+              <div class="text-center text-muted mb-4">
+                <small>Register User</small>
+              </div>
+              <form role="form" id="registerForm">
+                <div class="form-group">
+                  <div class="input-group input-group-merge input-group-alternative mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="First Name" id="first_name" type="text" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Last Name" id="last_name" type="text" required>
+                    </div>
+                  </div>
+                <div class="form-group">
+                  <div class="input-group input-group-merge input-group-alternative mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Email" id="email" type="email" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="input-group input-group-merge input-group-alternative">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                    </div>
+                    <input class="form-control" placeholder="Password" id="password" type="password" required>
+                  </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-headphones"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Phone" id="phone" type="text" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
+                        </div>
+                        <input id="dob-input" class="form-control" placeholder="DOB" type="text" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="ni ni-badge"></i></span>
+                        </div>
+                        <select class="form-control" placeholder="gender" id="gender">
+                            <option value="m">Male</option>
+                            <option value="f">Female</option>
+                            <option value="o">Others</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="input-group input-group-merge input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-pin-3"></i></span>
+                      </div>
+                      <input class="form-control" placeholder="Address" id="address" type="text" required>
+                    </div>
+                  </div>
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary mt-4">Create account</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Argon Scripts -->
+  <!-- Core -->
+  <script src="{% static 'artists/vendor/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'artists/vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'artists/vendor/js-cookie/js.cookie.js' %}"></script>
+  <script src="{% static 'artists/vendor/jquery.scrollbar/jquery.scrollbar.min.js' %}"></script>
+  <script src="{% static 'artists/vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js'' %}"></script>
+  <!-- Argon JS -->
+  <script src="{% static 'artists/js/argon.js' %}"></script>
+
+</body>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+        $("#dob-input").datepicker({
+            maxDate: "-1d",
+            dateFormat: "yy-mm-dd" // Set desired date format
+        });
+    });
+</script>
+<script>
+    const requestUrl = "{% url 'users:register_user' %}"
+    const successUrl = "{% url 'users:login' %}"
+    $(document).ready(function() {
+        $('#registerForm').submit(function(event){
+            event.preventDefault();
+            const first_name = $('#first_name').val();
+            const last_name = $('#last_name').val();
+            const email = $('#email').val();
+            const password = $('#password').val();
+            const phone = $('#phone').val();
+            const dob = $('#dob-input').val();
+            const gender = $('#gender').val();
+            const address = $('#address').val();
+            const data = {
+                first_name: first_name,
+                last_name: last_name,
+                email: email,
+                password: password,
+                phone: phone,
+                dob: dob,
+                gender: gender,
+                address: address
+            };
+            $.ajax({
+                url:requestUrl,
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                success: function(response){
+                    if (response.Status === 'Success') {
+                        window.location.href = successUrl;
+                    }
+                    if (response.Status === 'Error'){
+                        console.log(response.Message)
+                    }
+                },
+                error: function(xhr, textStatus, errorThrown){
+                    console.log(xhr, textStatus)
+                    var errorResponse = JSON.parse(xhr.responseText);
+                    var errorMessage = errorResponse.Message;
+                    alert(errorMessage)
+                }
+            });
+        });
+    });
+
+</script>
+</html>
