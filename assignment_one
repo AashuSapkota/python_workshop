@@ -1,0 +1,9 @@
+-- Book record
+As a user, I need to be able to signup
+As a user, I need to be able to signin to the application
+As a authenticated user, I need to be able to create a book
+As a authenticated user, I need to be able to edit existing book detail
+As a authenticated user, I need to be able to view existing book details
+As a authenticated user, I need to be able to view list of stored books
+As a authenticated user, I need to be able to signout from the application
+As a authenticated user, I need to be able to store book image
