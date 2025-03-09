@@ -2,8 +2,12 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, serializers
+from rest_framework.permissions import IsAuthenticated
 from .models import Artists, Music
 from .serializers import ArtistSerializer, MusicSerializer
+import csv
+from rest_framework.parsers import FileUploadParser
+from django.http import HttpResponse
 
 
 class RegisterArtistAPI(APIView):
@@ -18,8 +22,8 @@ class RegisterArtistAPI(APIView):
             serializer.save()
             return Response({'Status': 'Success', 'Message': 'Artist added successfully'}, status=201)
         return Response({'Status': 'Error', 'Message': str(serializer.errors)}, status=400)
-    
-
+   
+ 
 
 class ListArtistsAPI(APIView):
     serializer_class = ArtistSerializer
@@ -149,3 +153,43 @@ class UpdateArtistMusicAPI(APIView):
             return Response({'Status': 'Error', 'Message': 'Music does not exist'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'Status': 'Error', 'Message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+
+class ArtistsExportAPI(APIView):
+    def get(self, request, *args, **kwargs):
+        artists = Artists.objects.all()
+
+        # create the CSV response
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="artists.csv"'
+
+        # create a csv writer
+        writer = csv.writer(response)
+
+        # write the header row
+        writer.writerow(['Name', 'DOB', 'Gender', 'Address', 'First Release Year', 'No of Albums'])
+
+        # write artist data rows
+        for artist in artists:
+            writer.writerow([artist.name, artist.dob.date(), artist.gender, artist.address, artist.first_release_year, artist.no_of_albums_released])
+        
+        return response
+    
+
+class ArtistsUploadAPI(APIView):
+    permission_classes = [IsAuthenticated]
+    parser_class = (FileUploadParser,)
+
+    def post(self, request, format=None):
+        try:
+            file = request.data['file']
+        except Exception as e:
+            return Response({'Status':'Error', 'Message':'No file found.'}, status=400)
+        
+        artists_data = file.read().decode('utf-8')
+        artists_list = list(csv.DictReader(artists_data.splitlines()))
+        serializer = ArtistSerializer(data=artists_list, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'Status': 'Success', 'Message': 'Artists Uploaded Successfully'}, status=201)
+        return Response({'Status':'Error', 'Message':str(serializer.errors)}, status=400)

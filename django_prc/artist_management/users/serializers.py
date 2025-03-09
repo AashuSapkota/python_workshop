@@ -16,7 +16,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         password = validated_data.pop('password')
-        password_hash = make_password(password)
+        # password_hash = make_password(password)
         created_at = datetime.now()
         updated_at = datetime.now()
         user = User.objects.create_user(password=password, created_at=created_at, updated_at='', **validated_data)

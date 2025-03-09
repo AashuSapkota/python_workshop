@@ -1,0 +1,2 @@
+Deploying Django on Windows Server: https://blog.nonstopio.com/deploy-django-application-on-windows-iis-server-93aee2864c41
+Deploying Django on Ubuntu Server: https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu
